@@ -4,6 +4,7 @@
 
 package client;
 
+import java.util.regex.*;
 import ocsf.client.*;
 import common.*;
 import java.io.*;
@@ -64,31 +65,65 @@ public class ChatClient extends AbstractClient
    *
    * @param message The message from the UI.    
    */
+  //changed for E50 RM
   public void handleMessageFromClientUI(String message)
   {
+	//look for commands
+	Pattern command = Pattern.compile("^#.*?$");
+	Matcher matcher = command.matcher(message);
+	
+	//commands
+	Pattern setHost = Pattern.compile("^#host (\\w*?)$");
+	Matcher matcherSetHost = setHost.matcher(message);
+	Pattern logoff = Pattern.compile("^#logoff$");
+	Matcher matcherLogoff = logoff.matcher(message);
+	Pattern quit = Pattern.compile("^#quit$");
+	Matcher matcherQuit = quit.matcher(message);
+	if(matcher.find()){ //is a command
+		
+		//look for which commands
+		if(matcherSetHost.find()){
+			if(!this.isConnected()){
+				this.setHost(matcherSetHost.group(1));
+			} else {
+				System.out.println("Cannot change host while connected!");
+			}
+			
+		} else if(matcherLogoff.find()){
+			try{
+				closeConnection();
+				System.out.println("log me off");
+				System.out.println(this.isConnected());
+			} catch (IOException e){
+				connectionException(e);
+			}
+		} else if(matcherQuit.find()){
+			try{
+				closeConnection();
+				quit();
+			} catch (IOException e){
+				connectionException(e);
+			}
+		}
+		
+		
+	}
+	
+	if(this.isConnected()){
+		
+		try
+		{
+			sendToServer(message);
+		}
+		catch(IOException e)
+		{
+			clientUI.display
+			("Could not send message to server.  Terminating client.");
+			quit();
+		}
+	}
 
-    try
-    {
-      sendToServer(message);
-    }
-    catch(IOException e)
-    {
-      clientUI.display
-        ("Could not send message to server.  Terminating client.");
-      quit();
-    }
-    
-	  if(message.equals("#logoff")||message.equals("#quit")){
-		  try{
-			  	if(message.equals("#logoff")){
-			  		closeConnection();
-			  } else {
-				  quit();
-			  }
-		  } catch (IOException e){
-			  this.connectionException(e);
-		  }
-	  }
+	  
   }
   
   /**

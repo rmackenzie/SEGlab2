@@ -70,7 +70,7 @@ public class ClientConsole implements ChatIF
         new BufferedReader(new InputStreamReader(System.in));
       String message;
 
-      while (client.isConnected())  // **** Changed for E49 RM
+      while (true)  // **** Changed for E49 RM
       {
         message = fromConsole.readLine();
         client.handleMessageFromClientUI(message);
