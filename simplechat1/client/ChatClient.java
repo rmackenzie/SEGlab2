@@ -83,6 +83,10 @@ public class ChatClient extends AbstractClient
 	Matcher matcherSetPort = setPort.matcher(message);
 	Pattern login = Pattern.compile("^#login$");
 	Matcher matcherLogin = login.matcher(message);
+	Pattern getHost = Pattern.compile("^#gethost$");
+	Matcher matcherGetHost = getHost.matcher(message);
+	Pattern getPort = Pattern.compile("^#getport$");
+	Matcher matcherGetPort = getPort.matcher(message);
 	if(matcher.find()){ //is a command
 		
 		//look for which commands
@@ -107,7 +111,12 @@ public class ChatClient extends AbstractClient
 				connectionException(e);
 			}
 		} else if(matcherSetPort.find()){ //set port
-			this.setPort(Integer.parseInt(matcherSetHost.group(1)));
+			if(!this.isConnected()){
+				this.setPort(Integer.parseInt(matcherSetHost.group(1)));
+			} else {
+				clientUI.display("Cannot change port while connected!");
+			}
+			
 		} else if(matcherLogin.find()){ //open connection
 			if(!this.isConnected()){
 				try {
@@ -119,6 +128,10 @@ public class ChatClient extends AbstractClient
 			} else {
 				System.out.println("Cannot login host while connected!");
 			}
+		} else if(matcherGetHost.find()) {
+			clientUI.display(this.getHost());
+		} else if(matcherGetPort.find()) {
+			clientUI.display(Integer.toString(this.getPort()));
 		}
 		
 		
