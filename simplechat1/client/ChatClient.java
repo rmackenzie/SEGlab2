@@ -96,7 +96,6 @@ public class ChatClient extends AbstractClient
 		} else if(matcherLogoff.find()){ //log off
 			try{
 				closeConnection();
-				//System.out.println("asdf");
 			} catch (IOException e){
 				connectionException(e);
 			}
@@ -123,9 +122,11 @@ public class ChatClient extends AbstractClient
 		}
 		
 		
-	}
+	} else {
+	
+	
 	//changed for E50 RM
-	if(this.isConnected()){
+
 		
 		try
 		{
@@ -137,10 +138,7 @@ public class ChatClient extends AbstractClient
 			("Could not send message to server.  Terminating client.");
 			quit();
 		}
-	} else {
-		clientUI.display("Not connected to server!!");
 	}
-
 	  
   }
   
