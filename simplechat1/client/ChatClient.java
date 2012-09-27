@@ -73,42 +73,58 @@ public class ChatClient extends AbstractClient
 	Matcher matcher = command.matcher(message);
 	
 	//commands
-	Pattern setHost = Pattern.compile("^#host (\\w*?)$");
+	Pattern setHost = Pattern.compile("^#sethost (\\w*?)$");
 	Matcher matcherSetHost = setHost.matcher(message);
 	Pattern logoff = Pattern.compile("^#logoff$");
 	Matcher matcherLogoff = logoff.matcher(message);
 	Pattern quit = Pattern.compile("^#quit$");
 	Matcher matcherQuit = quit.matcher(message);
+	Pattern setPort = Pattern.compile("^#setport (\\d*?)$");
+	Matcher matcherSetPort = setPort.matcher(message);
+	Pattern login = Pattern.compile("^#login$");
+	Matcher matcherLogin = login.matcher(message);
 	if(matcher.find()){ //is a command
 		
 		//look for which commands
-		if(matcherSetHost.find()){
+		if(matcherSetHost.find()){  //set host
 			if(!this.isConnected()){
 				this.setHost(matcherSetHost.group(1));
 			} else {
 				System.out.println("Cannot change host while connected!");
 			}
 			
-		} else if(matcherLogoff.find()){
+		} else if(matcherLogoff.find()){ //log off
 			try{
 				closeConnection();
-				System.out.println("log me off");
-				System.out.println(this.isConnected());
+				//System.out.println("asdf");
 			} catch (IOException e){
 				connectionException(e);
 			}
-		} else if(matcherQuit.find()){
+		} else if(matcherQuit.find()){ //quit
 			try{
 				closeConnection();
 				quit();
 			} catch (IOException e){
 				connectionException(e);
 			}
+		} else if(matcherSetPort.find()){ //set port
+			this.setPort(Integer.parseInt(matcherSetHost.group(1)));
+		} else if(matcherLogin.find()){ //open connection
+			if(!this.isConnected()){
+				try {
+					this.openConnection();
+				} catch (IOException e) {
+					connectionException(e);
+				}
+				
+			} else {
+				System.out.println("Cannot login host while connected!");
+			}
 		}
 		
 		
 	}
-	
+	//changed for E50 RM
 	if(this.isConnected()){
 		
 		try
@@ -121,6 +137,8 @@ public class ChatClient extends AbstractClient
 			("Could not send message to server.  Terminating client.");
 			quit();
 		}
+	} else {
+		clientUI.display("Not connected to server!!");
 	}
 
 	  
