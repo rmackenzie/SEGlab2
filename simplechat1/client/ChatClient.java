@@ -80,9 +80,10 @@ public class ChatClient extends AbstractClient
     
 	  if(message.equals("#logoff")||message.equals("#quit")){
 		  try{
-			  this.closeConnection();
-			  if(message.equals("#quit")){
-				  this.quit();
+			  	if(message.equals("#logoff")){
+			  		closeConnection();
+			  } else {
+				  quit();
 			  }
 		  } catch (IOException e){
 			  this.connectionException(e);

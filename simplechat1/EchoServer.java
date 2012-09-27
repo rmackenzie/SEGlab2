@@ -45,7 +45,7 @@ public class EchoServer extends AbstractServer
    * @param msg The message received from the client.
    * @param client The connection from which the message originated.
    */
-  public void handleMessageFromClient
+  public void handleMessageFromClient //changed for E50 RM
     (Object msg, ConnectionToClient client)
   {
 
@@ -86,13 +86,7 @@ public class EchoServer extends AbstractServer
    * Overrides the abstract method
    * Outputs a message when client disconnects
    */
-  synchronized protected void clientDisconnected(ConnectionToClient client) {
-	  //get problem with client.close, doesn't seem to work without throwing exception in closeall()
-	  try {
-		  client.close();
-	  } catch (IOException e){
-		  clientException(client, e);
-	  }
+  synchronized protected void clientDisconnected(ConnectionToClient client) { 
 	  
 	  System.out.println("A client has disconnected.");
   }
