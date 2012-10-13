@@ -27,6 +27,13 @@ public class ChatClient extends AbstractClient
    * the display method in the client.
    */
   ChatIF clientUI; 
+  
+  /**
+   * Stores the login ID
+   * Required for client to login to the server
+   * Provided as command line argument
+   */
+  String loginID; //changed by RM for E51
 
   
   //Constructors ****************************************************
@@ -39,12 +46,30 @@ public class ChatClient extends AbstractClient
    * @param clientUI The interface type variable.
    */
   
-  public ChatClient(String host, int port, ChatIF clientUI) 
+  public ChatClient(String loginID, String host, int port, ChatIF clientUI) 
     throws IOException 
   {
     super(host, port); //Call the superclass constructor
+    //****  changed for E51 RM
+    if(loginID == null || loginID == ""){
+    	throw new IOException("Requires a loginID to connect!");
+    }
+    
     this.clientUI = clientUI;
+    this.loginID = loginID;
     openConnection();
+    
+    //*** changed for E51 RM
+	try
+	{
+		sendToServer("#login " + loginID);
+	}
+	catch(IOException e)
+	{
+		clientUI.display
+		("Could not send message to server.  Terminating client.");
+		quit();
+	}
   }
 
   
@@ -168,10 +193,18 @@ public class ChatClient extends AbstractClient
     System.exit(0);
   }
   
+  /**
+   * This method sets the loginID
+   * @param lID the new client loginID
+   */
+  public void setLoginID(String lID){
+	  loginID = lID;
+  }
+  
 //**** Changed for E49 RM
   /**
    * This method overrides the abstract method, is called when an
-   * error with the connection occrs
+   * error with the connection occurs
    */
   public void connectionException(Exception e){
 	  System.out.println("The connection has been closed unexpectedly.");

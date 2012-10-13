@@ -41,16 +41,16 @@ public class ClientConsole implements ChatIF
    * @param host The host to connect to.
    * @param port The port to connect on.
    */
-  public ClientConsole(String host, int port) 
+  public ClientConsole(String loginID, String host, int port) 
   {
     try 
     {
-      client= new ChatClient(host, port, this);
+      client= new ChatClient(loginID, host, port, this);
     } 
     catch(IOException exception) 
     {
       System.out.println("Error: Can't setup connection!"
-                + " Terminating client.");
+                + " Terminating client. " + exception);
       System.exit(1);
     }
   }
@@ -115,18 +115,20 @@ public class ClientConsole implements ChatIF
   {
     String host = "";
     int port = 0;  //The port number
+    String loginID = "";
 
     try
     {
-      host = args[0];
-      port = Integer.parseInt(args[1]); // **** Changed for E49 RM
+      loginID = args[0];
+      host = args[1];
+      port = Integer.parseInt(args[2]); // **** Changed for E49 RM
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
       host = "localhost";
       port = DEFAULT_PORT;
     }
-    ClientConsole chat= new ClientConsole(host, DEFAULT_PORT);
+   	ClientConsole chat= new ClientConsole(loginID, host, DEFAULT_PORT);
     chat.accept();  //Wait for console data
   }
 }
