@@ -8,7 +8,7 @@ import common.*;
  * Created for Question E50b AP
  * This class constructs the UI for a server client.  It implements the
  * chat interface in order to activate the display() method.
- * Warning: Some of the code here is cloned in ClientConsole 
+ * Warning: Some of the code here is cloned from ClientConsole 
  *
  * @author Adnan Patel
  * @version Oct 2012

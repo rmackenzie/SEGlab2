@@ -60,6 +60,7 @@ public class ChatClient extends AbstractClient
     openConnection();
     
     //*** changed for E51 RM
+    
 	try
 	{
 		sendToServer("#login " + loginID);
@@ -70,6 +71,7 @@ public class ChatClient extends AbstractClient
 		("Could not send message to server.  Terminating client.");
 		quit();
 	}
+	
   }
 
   
@@ -112,7 +114,9 @@ public class ChatClient extends AbstractClient
 	Matcher matcherGetHost = getHost.matcher(message);
 	Pattern getPort = Pattern.compile("^#getport$");
 	Matcher matcherGetPort = getPort.matcher(message);
-	if(matcher.find()){ //is a command
+		//had to take this out 
+		//otherwise it wouldn't send #login <id> to server AP
+	//if(matcher.find()){ //is a command
 		
 		//look for which commands
 		if(matcherSetHost.find()){  //set host
@@ -157,10 +161,10 @@ public class ChatClient extends AbstractClient
 			clientUI.display(this.getHost());
 		} else if(matcherGetPort.find()) {
 			clientUI.display(Integer.toString(this.getPort()));
-		}
+		} 
 		
 		
-	} else {
+	/*}*/ else {
 	
 	
 	//changed for E50 RM

@@ -4,6 +4,7 @@
 
 import java.io.*;
 import java.util.regex.*;
+
 import ocsf.server.*;
 import common.*;
 
@@ -63,21 +64,56 @@ public class EchoServer extends AbstractServer
    * @param msg The message received from the client.
    * @param client The connection from which the message originated.
    */
-  public void handleMessageFromClient //changed for E50 RM
+  public void handleMessageFromClient 
     (Object msg, ConnectionToClient client)
   {
-
-    System.out.println("Message received: " + msg + " from " + client);
-    try {
-        if(msg.equals("#quit")||msg.equals("#logoff")){
-        	//clientDisconnected(client);
-        } else {
-            this.sendToAllClients(msg);
-        }    
-    } catch (Exception e){
-    	System.out.println("Failed to disconnect the client");
-    }
+	//*** changed for E51 AP
+	  
+	//setup regex
+	Pattern setLoginID = Pattern.compile("^#login (\\w*?)$");
+	Matcher matcherSetLoginID = setLoginID.matcher((String) msg);
+	
+	
+	if(matcherSetLoginID.find()){ //login id command found
+		if (client.getInfo("loginID") == null){ //if no ID set
+			client.setInfo("loginID", matcherSetLoginID.group(1)); //store login ID 
+			serverUI.display(client.getInfo("loginID") + " has connected");
+		}
+		else { //Id already set
+			try {
+				client.sendToClient("ERROR! Cannot change login ID");
+			} catch (IOException e) {
+				System.out.println("Error sending message to client");
+			}
+		}
+	} 
+	else{ //no login id command found
+		if (client.getInfo("loginID") == null){ //no login id set initially
+			try{
+				client.sendToClient("No login ID was set intially...terminating connection");
+				client.close();
+			}catch (IOException e) {
+				System.out.println("Error while sending message to client or while closing client");
+			}
+		}
+		else{
+			serverUI.display("Message received: " + msg + " from " + client);
+			this.sendToAllClients(client.getInfo("loginID") + "> " + msg);
+		}
+	}
   }
+  //dont need this try catch block because the client handles the client commands quit/logoff
+  /* 
+  try {
+      if(msg.equals("#quit")||msg.equals("#logoff")){
+      	clientDisconnected(client);
+      } else {
+          this.sendToAllClients(msg);
+      }    
+  } catch (Exception e){
+  	System.out.println("Failed to disconnect the client");
+  }
+  */
   
   /**
    * Added for Quesion E50 AP
@@ -180,7 +216,7 @@ public class EchoServer extends AbstractServer
       ("Server has stopped listening for connections.");
   }
   
-  
+  //***Added for E50 AP
   /**
    * This method overrides the one in the superclass.  Called
    * when the server closes
