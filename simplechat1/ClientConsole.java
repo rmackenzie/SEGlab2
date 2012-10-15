@@ -117,15 +117,22 @@ public class ClientConsole implements ChatIF
     int port = 0;  //The port number
     String loginID = "";
 
+    loginID = args[0];
+ // **** Changed for E49 RM and AP
     try
     {
-      loginID = args[0];
       host = args[1];
-      port = Integer.parseInt(args[2]); // **** Changed for E49 RM
+    }
+    catch (ArrayIndexOutOfBoundsException e) 
+    {
+        host = "localhost";
+    }
+    try
+    {
+    	port = Integer.parseInt(args[2]); 
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
-      host = "localhost";
       port = DEFAULT_PORT;
     }
    	ClientConsole chat= new ClientConsole(loginID, host, DEFAULT_PORT);
