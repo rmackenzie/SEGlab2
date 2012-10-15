@@ -114,8 +114,8 @@ public class ChatClient extends AbstractClient
 	Matcher matcherGetHost = getHost.matcher(message);
 	Pattern getPort = Pattern.compile("^#getport$");
 	Matcher matcherGetPort = getPort.matcher(message);
-		//had to take this out 
-		//otherwise it wouldn't send #login <id> to server AP
+
+
 	if(matcher.find()){ //is a command
 		
 		//look for which commands
@@ -141,7 +141,7 @@ public class ChatClient extends AbstractClient
 			}
 		} else if(matcherSetPort.find()){ //set port
 			if(!this.isConnected()){
-				this.setPort(Integer.parseInt(matcherSetHost.group(1)));
+				this.setPort(Integer.parseInt(matcherSetPort.group(1)));
 			} else {
 				clientUI.display("Cannot change port while connected!");
 			}

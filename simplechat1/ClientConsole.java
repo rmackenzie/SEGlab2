@@ -128,7 +128,7 @@ public class ClientConsole implements ChatIF
       host = "localhost";
       port = DEFAULT_PORT;
     }
-   	ClientConsole chat= new ClientConsole(loginID, host, DEFAULT_PORT);
+   	ClientConsole chat= new ClientConsole(loginID, "137.122.46.65", DEFAULT_PORT);
     chat.accept();  //Wait for console data
   }
 }
