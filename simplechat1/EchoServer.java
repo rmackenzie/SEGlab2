@@ -72,10 +72,7 @@ public class EchoServer extends AbstractServer
 	//setup regex
 	Pattern setLoginID = Pattern.compile("^#login (\\w*?)$");
 	Matcher matcherSetLoginID = setLoginID.matcher((String) msg);
-	/*
-	Pattern setChar = Pattern.compile("^(\\c*?)$");
-	Matcher matcherChar = setChar.matcher((String) msg);
-	*/
+
 	if(matcherSetLoginID.find()){ //login id command found
 		if (client.getInfo("loginID") == null || client.getInfo("loginID").equals("")){//if no ID set
 			
