@@ -164,8 +164,9 @@ public class EchoServer extends AbstractServer
 					this.serverUI.display("Server already stopped!");
 				}
 				
-			} else if(matcherClose.find()){ //log off
+			} else if(matcherClose.find()){ //close
 				try{
+					this.sendToAllClients("SERVER SHUTTING DOWN! DISCONNECTING!");
 					this.close();
 				} catch (IOException e){} //ignore exception as per close() method description
 			} else if(matcherQuit.find()){ //quit
@@ -187,6 +188,7 @@ public class EchoServer extends AbstractServer
 				if(!this.isListening()){
 					try {
 						this.listen();
+						
 						this.isClosed = false;
 					} catch (IOException e) {
 						serverUI.display("ERROR - Could not listen for clients!");
