@@ -72,14 +72,25 @@ public class EchoServer extends AbstractServer
 	//setup regex
 	Pattern setLoginID = Pattern.compile("^#login (\\w*?)$");
 	Matcher matcherSetLoginID = setLoginID.matcher((String) msg);
-	
-	
+	/*
+	Pattern setChar = Pattern.compile("^(\\c*?)$");
+	Matcher matcherChar = setChar.matcher((String) msg);
+	*/
 	if(matcherSetLoginID.find()){ //login id command found
-		if (client.getInfo("loginID") == null || client.getInfo("loginID") == ""){ //if no ID set
-			if(matcherSetLoginID.group(1) == "" || matcherSetLoginID.group(1) == null){
+		if (client.getInfo("loginID") == null || client.getInfo("loginID").equals("")){//if no ID set
+			
+			if (matcherSetLoginID.group(1) == null || matcherSetLoginID.group(1).equals("")){ //blank Id sent
+				try{
+					client.sendToClient("No login ID was set intially...terminating connection");
+					client.close();
+				}catch (IOException e) {
+					System.out.println("Error while sending message to client or while closing client");
+				}
+			} 
+			else{
+				client.setInfo("loginID", matcherSetLoginID.group(1)); //store login ID 
+				serverUI.display(client.getInfo("loginID") + " has connected");
 			}
-			client.setInfo("loginID", matcherSetLoginID.group(1)); //store login ID 
-			serverUI.display(client.getInfo("loginID") + " has connected");
 		}
 		else { //Id already set
 			try {
@@ -90,7 +101,7 @@ public class EchoServer extends AbstractServer
 		}
 	} 
 	else{ //no login id command found
-		if (client.getInfo("loginID") == null || client.getInfo("loginID") == ""){ //no login id set initially
+		if (client.getInfo("loginID") == null || client.getInfo("loginID").equals("")){ //no login id set initially
 			try{
 				client.sendToClient("No login ID was set intially...terminating connection");
 				client.close();
