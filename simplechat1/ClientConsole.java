@@ -117,10 +117,11 @@ public class ClientConsole implements ChatIF
     int port = 0;  //The port number
     String loginID = "";
 
-    loginID = args[0];
+    
     
     try
     {
+      loginID = args[0];
       host = args[1];
       port = Integer.parseInt(args[2]); // **** Changed for E49 RM
     }
