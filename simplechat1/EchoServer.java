@@ -258,7 +258,8 @@ public class EchoServer extends AbstractServer
    * Outputs a message when client disconnects
    */
   synchronized protected void clientException(ConnectionToClient client, Throwable exception) { 
-	  System.out.println("A client has disconnected unexpectedly.");
+	  System.out.println(client.getInfo("loginID") + " has disconnected unexpectedly.");
+	  this.sendToAllClients(client.getInfo("loginID") + "has disconnected.");
   }
   
   //Class methods ***************************************************
