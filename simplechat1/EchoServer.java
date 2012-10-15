@@ -155,9 +155,10 @@ public class EchoServer extends AbstractServer
 		if(matcher.find()){ //is a command
 			
 			//look for which commands
-			if(matcherStop.find()){  //set host
+			if(matcherStop.find()){  //set Stop
 				if(this.isListening()){
 					this.stopListening();
+					this.sendToAllClients("Warning -- Server not listening to new connections");
 				} 
 				else {
 					this.serverUI.display("Server already stopped!");
