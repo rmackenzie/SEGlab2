@@ -108,7 +108,7 @@ public class ChatClient extends AbstractClient
 	Matcher matcherQuit = quit.matcher(message);
 	Pattern setPort = Pattern.compile("^#setport (\\d*?)$");
 	Matcher matcherSetPort = setPort.matcher(message);
-	Pattern login = Pattern.compile("^#login$");
+	Pattern login = Pattern.compile("^#login (\\w*?)$");
 	Matcher matcherLogin = login.matcher(message);
 	Pattern getHost = Pattern.compile("^#gethost$");
 	Matcher matcherGetHost = getHost.matcher(message);
@@ -116,7 +116,7 @@ public class ChatClient extends AbstractClient
 	Matcher matcherGetPort = getPort.matcher(message);
 		//had to take this out 
 		//otherwise it wouldn't send #login <id> to server AP
-	//if(matcher.find()){ //is a command
+	if(matcher.find()){ //is a command
 		
 		//look for which commands
 		if(matcherSetHost.find()){  //set host
@@ -146,10 +146,12 @@ public class ChatClient extends AbstractClient
 				clientUI.display("Cannot change port while connected!");
 			}
 			
-		} else if(matcherLogin.find()){ //open connection
+		} else if(matcherLogin.find()){ //open connection, must also set loginID and send to server
 			if(!this.isConnected()){
 				try {
 					this.openConnection();
+					this.setLoginID(matcherLogin.group(1));
+					sendToServer(message);
 				} catch (IOException e) {
 					connectionException(e);
 				}
@@ -162,9 +164,7 @@ public class ChatClient extends AbstractClient
 		} else if(matcherGetPort.find()) {
 			clientUI.display(Integer.toString(this.getPort()));
 		} 
-		
-		
-	/*}*/ else {
+	} else {
 	
 	
 	//changed for E50 RM
