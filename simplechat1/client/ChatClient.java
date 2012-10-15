@@ -104,7 +104,7 @@ public class ChatClient extends AbstractClient
 	Matcher matcher = command.matcher(message);
 	
 	//commands
-	Pattern setHost = Pattern.compile("^#sethost (\\w*?)$");
+	Pattern setHost = Pattern.compile("^#sethost (.*?)$");
 	Matcher matcherSetHost = setHost.matcher(message);
 	Pattern logoff = Pattern.compile("^#logoff$");
 	Matcher matcherLogoff = logoff.matcher(message);
@@ -126,6 +126,7 @@ public class ChatClient extends AbstractClient
 		if(matcherSetHost.find()){  //set host
 			if(!this.isConnected()){
 				this.setHost(matcherSetHost.group(1));
+				clientUI.display("Set host to " + matcherSetHost.group(1));
 			} else {
 				System.out.println("Cannot change host while connected!");
 			}
@@ -146,6 +147,7 @@ public class ChatClient extends AbstractClient
 		} else if(matcherSetPort.find()){ //set port
 			if(!this.isConnected()){
 				this.setPort(Integer.parseInt(matcherSetPort.group(1)));
+				clientUI.display("Port set to " + matcherSetPort.group(1));
 			} else {
 				clientUI.display("Cannot change port while connected!");
 			}
