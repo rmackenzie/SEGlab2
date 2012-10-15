@@ -51,7 +51,6 @@ public class ClientConsole implements ChatIF
     {
       System.out.println("Error: Can't setup connection!"
                 + " Terminating client. " + exception);
-      System.exit(1);
     }
   }
 
@@ -83,7 +82,7 @@ public class ClientConsole implements ChatIF
     }
     if(!client.isConnected()){ // **** Changed for E49 RM
     	try{
-    		client.closeConnection();
+    		this.display("Not connected to server. Awaiting command.");
     	}
     	catch (Exception e) {
     		client.connectionException(e);
@@ -132,7 +131,7 @@ public class ClientConsole implements ChatIF
       host = "localhost";
       port = DEFAULT_PORT;
     }
-   	ClientConsole chat= new ClientConsole(loginID, host, DEFAULT_PORT);
+   	ClientConsole chat= new ClientConsole(loginID, "137.122.47.12", DEFAULT_PORT);
     chat.accept();  //Wait for console data
   }
 }

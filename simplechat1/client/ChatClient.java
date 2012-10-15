@@ -51,14 +51,19 @@ public class ChatClient extends AbstractClient
   {
     super(host, port); //Call the superclass constructor
     //****  changed for E51 RM
-    if(loginID == null || loginID == ""){
+  /*  if(loginID == null || loginID == ""){
     	throw new IOException("Requires a loginID to connect!");
     }
-    
+ */   
     this.clientUI = clientUI;
     this.loginID = loginID;
-    openConnection();
-    
+    try {
+    	openConnection();
+    }
+    catch (Exception e)
+    {
+    	System.out.println("Failed to open connection");
+    }
     //*** changed for E51 RM
     
 	try
@@ -68,8 +73,7 @@ public class ChatClient extends AbstractClient
 	catch(IOException e)
 	{
 		clientUI.display
-		("Could not send message to server.  Terminating client.");
-		quit();
+		("Could not send message to server.  Awaiting command.");
 	}
 	
   }
@@ -149,8 +153,8 @@ public class ChatClient extends AbstractClient
 		} else if(matcherLogin.find()){ //open connection, must also set loginID and send to server
 			if(!this.isConnected()){
 				try {
-					this.openConnection();
 					this.setLoginID(matcherLogin.group(1));
+					this.openConnection();				
 					sendToServer(message);
 				} catch (IOException e) {
 					connectionException(e);

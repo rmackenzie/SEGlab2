@@ -75,7 +75,7 @@ public class EchoServer extends AbstractServer
 	
 	
 	if(matcherSetLoginID.find()){ //login id command found
-		if (client.getInfo("loginID") == null){ //if no ID set
+		if (client.getInfo("loginID") == null || client.getInfo("loginID") == ""){ //if no ID set
 			client.setInfo("loginID", matcherSetLoginID.group(1)); //store login ID 
 			serverUI.display(client.getInfo("loginID") + " has connected");
 		}
@@ -88,7 +88,7 @@ public class EchoServer extends AbstractServer
 		}
 	} 
 	else{ //no login id command found
-		if (client.getInfo("loginID") == null){ //no login id set initially
+		if (client.getInfo("loginID") == null || client.getInfo("loginID") == ""){ //no login id set initially
 			try{
 				client.sendToClient("No login ID was set intially...terminating connection");
 				client.close();
