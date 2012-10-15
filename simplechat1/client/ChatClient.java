@@ -33,7 +33,7 @@ public class ChatClient extends AbstractClient
    * Required for client to login to the server
    * Provided as command line argument
    */
-  String loginID; //changed by RM for E51
+  private String loginID; //changed by RM for E51
 
   
   //Constructors ****************************************************
@@ -215,8 +215,15 @@ public class ChatClient extends AbstractClient
    * error with the connection occurs
    */
   public void connectionException(Exception e){
-	  System.out.println("The connection has been closed unexpectedly.");
-	  System.exit(0);
+	  System.out.println("The connection has been closed unexpectedly. Awaiting Commands.");
+  }
+  
+  /**
+   * Gets this client's login ID
+   * @return loginID
+   */
+  public String getLoginID(){
+	  return loginID;
   }
   
 }

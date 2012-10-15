@@ -76,6 +76,8 @@ public class EchoServer extends AbstractServer
 	
 	if(matcherSetLoginID.find()){ //login id command found
 		if (client.getInfo("loginID") == null || client.getInfo("loginID") == ""){ //if no ID set
+			if(matcherSetLoginID.group(1) == "" || matcherSetLoginID.group(1) == null){
+			}
 			client.setInfo("loginID", matcherSetLoginID.group(1)); //store login ID 
 			serverUI.display(client.getInfo("loginID") + " has connected");
 		}
