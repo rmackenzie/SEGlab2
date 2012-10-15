@@ -118,21 +118,17 @@ public class ClientConsole implements ChatIF
     String loginID = "";
 
     loginID = args[0];
- // **** Changed for E49 RM and AP
+    
     try
     {
       host = args[1];
-    }
-    catch (ArrayIndexOutOfBoundsException e) 
-    {
-        host = "localhost";
-    }
-    try
-    {
-    	port = Integer.parseInt(args[2]); 
+      port = Integer.parseInt(args[2]); // **** Changed for E49 RM
     }
     catch(ArrayIndexOutOfBoundsException e)
     {
+      System.out.println("Incomplete parameter list. Usage: loginID host port");
+      System.out.println("Setting host and port to default values");
+      host = "localhost";
       port = DEFAULT_PORT;
     }
    	ClientConsole chat= new ClientConsole(loginID, host, DEFAULT_PORT);
