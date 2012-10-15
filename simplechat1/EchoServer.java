@@ -90,6 +90,7 @@ public class EchoServer extends AbstractServer
 			else{
 				client.setInfo("loginID", matcherSetLoginID.group(1)); //store login ID 
 				serverUI.display(client.getInfo("loginID") + " has connected");
+				this.sendToAllClients(client.getInfo("loginID") + " has connected");
 			}
 		}
 		else { //Id already set
